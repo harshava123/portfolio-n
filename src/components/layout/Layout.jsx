@@ -7,12 +7,13 @@ import { BrowserRouter as Router, useLocation } from 'react-router-dom'
 function LayoutContent() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isGalleryPage = location.pathname.startsWith('/portfolio/');
   
   return (
     <>
-      {!isHomePage && <Header/>}
+      {!isHomePage && !isGalleryPage && <Header/>}
       <Routers/>
-      {!isHomePage && <Footer/>}
+      {!isHomePage && !isGalleryPage && <Footer/>}
     </>
   )
 }

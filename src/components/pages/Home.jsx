@@ -1,6 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import heroImage from "../../assets/hero.png";
+import image1 from "../../assets/1.JPG";
+import image2 from "../../assets/2.JPG";
+import image3 from "../../assets/3.JPG";
+import image4 from "../../assets/4.JPG";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -30,12 +34,12 @@ export default function Home() {
           variants={fadeIn}
           className="relative z-10 text-center px-6 max-w-4xl flex flex-col items-center space-y-28 md:space-y-36 lg:space-y-44"
         >
-          <h1 className="text-6xl md:text-8xl font-bold mb-12" style={{ fontFamily: "Playfair Display, serif" }}>
+          <h1 className="text-6xl md:text-8xl font-bold mb-16" style={{ fontFamily: "Playfair Display, serif" }}>
             Navya Dhriti
           </h1>
           
           {/* Contact Info - Single Line (below name) */}
-          <div className="flex items-center justify-center gap-4 text-gray-200 mt-[20vh] md:mt-[24vh] lg:mt-[28vh]"
+          <div className="flex items-center justify-center gap-4 text-gray-200 mt-8 md:mt-12 lg:mt-16"
           >
             <a 
               href="https://instagram.com/navya.dhriti" 
@@ -78,14 +82,21 @@ export default function Home() {
       </section>
 
       {/* CATEGORIES SECTION */}
-      <section className="relative py-40 px-6 bg-gradient-to-b from-white via-stone-50 to-white overflow-hidden">
-        {/* Decorative Background Element */}
+      <section className="relative py-40 px-6 overflow-hidden">
+        {/* Background (subtle hero image for visual continuity) */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center scale-110"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        ></div>
+        {/* Soft overlay for readability */}
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px]"></div>
+        {/* Decorative Background Elements */}
         <div className="absolute top-20 right-0 w-72 h-72 bg-gray-900 rounded-full blur-3xl opacity-5"></div>
         <div className="absolute bottom-20 left-0 w-96 h-96 bg-gray-900 rounded-full blur-3xl opacity-5"></div>
         
-        <div className="max-w-4xl mx-auto relative z-10">
+        <div className="max-w-6xl mx-auto relative z-10">
           {/* Section Header */}
-          <div className="flex items-center gap-8 mb-24">
+          <div className="flex items-center gap-16 mb-60">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -101,7 +112,7 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeIn}
-              className="text-5xl md:text-6xl font-bold text-gray-900 whitespace-nowrap px-8"
+              className="text-5xl md:text-6xl font-bold text-gray-900 whitespace-nowrap px-16"
               style={{ fontFamily: "Playfair Display, serif" }}
             >
               Portfolio
@@ -119,13 +130,13 @@ export default function Home() {
           </div>
 
           {/* 2x2 Grid Layout - Centered */}
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+          <div className="flex justify-center w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full">
             {[
-              { id: 1, image: "1.JPG" },
-              { id: 2, image: "2.JPG" },
-              { id: 3, image: "3.JPG" },
-              { id: 4, image: "placeholder" }
+              { id: 1, image: image1, title: "Traditional", href: "/portfolio/traditional" },
+              { id: 2, image: image2, title: "Fashion", href: "/portfolio/fashion" },
+              { id: 3, image: image3, title: "Editorial", href: "/portfolio/editorial" },
+              { id: 4, image: image4, title: "Commercial", href: "/portfolio/commercial" }
             ].map((category, index) => (
               <motion.div
                 key={category.id}
@@ -135,14 +146,25 @@ export default function Home() {
                 transition={{ duration: 0.7, delay: index * 0.1 }}
                 className="group cursor-pointer"
               >
+                <a href={category.href} className="block">
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                   {/* Square aspect ratio with background image */}
                   <div 
                     className="aspect-square bg-cover bg-center"
                     style={{
                       backgroundImage: category.image !== "placeholder" 
-                        ? `url('/${category.image}')` 
-                        : "linear-gradient(to bottom right, #e5e7eb, #d1d5db)"
+                        ? `url(${category.image})` 
+                        : "linear-gradient(to bottom right, #e5e7eb, #d1d5db)",
+                      // Nudge first image down a bit to avoid head cropping
+                      backgroundPosition: category.id === 1
+                        ? "center 30%"
+                        : category.id === 4
+                        ? "center 35%"
+                        : "center",
+                      // 4th image should fill completely
+                      backgroundSize: "cover",
+                      backgroundRepeat: undefined,
+                      backgroundColor: undefined
                     }}
                   >
                     {category.image === "placeholder" && (
@@ -153,15 +175,19 @@ export default function Home() {
                   </div>
                   
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-all duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-all duration-500"></div>
                   
-                  {/* Explore Text */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  {/* Category Title */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <h3 className="text-white text-3xl font-bold mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
+                      {category.title}
+                    </h3>
                     <p className="text-gray-200 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      Explore the collection →
+                      View Collection →
                     </p>
                   </div>
                 </div>
+                </a>
               </motion.div>
             ))}
             </div>
@@ -170,13 +196,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="py-8 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-sm text-gray-400">
-            © 2025 Navya Dhriti. All Rights Reserved.
-          </p>
-        </div>
-      </footer>
+      
     </div>
   );
 }
