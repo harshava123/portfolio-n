@@ -1,6 +1,6 @@
 import React from 'react'
 import GalleryTemplate from './GalleryTemplate'
-import image4 from '../../assets/4.JPG'
+import image4 from '../../assets/4.jpg'
 
 export default function Commercial() {
   return <GalleryTemplate title="Commercial" images={[image4]} />
