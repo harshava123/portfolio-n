@@ -4,7 +4,7 @@ import heroImage from "../../assets/hero.png";
 import image1 from "../../assets/1.JPG";
 import image2 from "../../assets/2.JPG";
 import image3 from "../../assets/3.JPG";
-import image4 from "../../assets/4.JPG";
+import image4 from "../../assets/4.jpg";
 import image21 from "../../assets/2.1.JPG";
 
 const fadeIn = {
