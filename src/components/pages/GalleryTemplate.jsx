@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import heroImage from '../../assets/hero.png'
 
 const fadeIn = {
@@ -8,6 +9,7 @@ const fadeIn = {
 };
 
 export default function GalleryTemplate({ title, images = [] }) {
+  const navigate = useNavigate();
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   
   // Create 8 images by repeating the provided images
@@ -49,6 +51,20 @@ export default function GalleryTemplate({ title, images = [] }) {
       <div className="absolute top-20 right-10 w-96 h-96 bg-gradient-to-br from-rose-200/20 to-pink-200/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-purple-200/20 to-indigo-200/20 rounded-full blur-3xl"></div>
       
+      {/* Back to Home Button - Fixed Top Left */}
+      <motion.button
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        onClick={() => navigate('/')}
+        className="fixed top-8 left-8 z-50 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors group bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
+      >
+        <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span className="text-sm font-medium">Home</span>
+      </motion.button>
+
       <div className="relative z-10">
         {/* Hero Header */}
         <section className="py-24 px-6">
