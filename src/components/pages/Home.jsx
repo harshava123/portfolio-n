@@ -5,6 +5,7 @@ import image1 from "../../assets/1.JPG";
 import image2 from "../../assets/2.JPG";
 import image3 from "../../assets/3.JPG";
 import image4 from "../../assets/4.JPG";
+import image21 from "../../assets/2.1.JPG";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -81,8 +82,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Gradient Transition */}
+      <div className="h-32 bg-gradient-to-b from-black/30 to-white/80"></div>
+
       {/* CATEGORIES SECTION */}
-      <section className="relative py-40 px-6 overflow-hidden">
+      <section className="relative pt-40 pb-40 px-6 overflow-hidden">
         {/* Background (subtle hero image for visual continuity) */}
         <div 
           className="absolute inset-0 bg-cover bg-center scale-110"
@@ -96,7 +100,7 @@ export default function Home() {
         
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Section Header */}
-          <div className="flex items-center gap-16 mb-60">
+          <div className="flex items-center gap-16 mb-80">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -129,14 +133,15 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* 2x2 Grid Layout - Centered */}
+          {/* 3-2 Grid Layout - Centered */}
           <div className="flex justify-center w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 max-w-6xl w-full">
             {[
-              { id: 1, image: image1, title: "Traditional", href: "/portfolio/traditional" },
-              { id: 2, image: image2, title: "Fashion", href: "/portfolio/fashion" },
-              { id: 3, image: image3, title: "Editorial", href: "/portfolio/editorial" },
-              { id: 4, image: image4, title: "Commercial", href: "/portfolio/commercial" }
+              { id: 1, image: image1, title: "", href: "/portfolio/traditional" },
+              { id: 2, image: image2, title: "", href: "/portfolio/fashion" },
+              { id: 3, image: image3, title: "", href: "/portfolio/editorial" },
+              { id: 4, image: image4, title: "", href: "/portfolio/commercial" },
+              { id: 5, image: image21, title: "", href: "/portfolio/commercial" }
             ].map((category, index) => (
               <motion.div
                 key={category.id}
@@ -144,7 +149,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: index * 0.1 }}
-                className="group cursor-pointer"
+                className={`group cursor-pointer ${category.id === 4 ? 'md:col-start-1 lg:col-start-1' : category.id === 5 ? 'md:col-start-2 lg:col-start-2' : ''}`}
               >
                 <a href={category.href} className="block">
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl">
@@ -158,8 +163,12 @@ export default function Home() {
                       // Nudge first image down a bit to avoid head cropping
                       backgroundPosition: category.id === 1
                         ? "center 30%"
+                        : category.id === 2
+                        ? "center 20%"
                         : category.id === 4
                         ? "center 35%"
+                        : category.id === 5
+                        ? "center 40%"
                         : "center",
                       // 4th image should fill completely
                       backgroundSize: "cover",
@@ -192,6 +201,7 @@ export default function Home() {
             ))}
             </div>
           </div>
+
         </div>
       </section>
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import heroImage from '../../assets/hero.png'
 
 const fadeIn = {
@@ -8,11 +8,29 @@ const fadeIn = {
 };
 
 export default function GalleryTemplate({ title, images = [] }) {
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  
   // Create 8 images by repeating the provided images
   const galleryImages = [];
   for (let i = 0; i < 8; i++) {
     galleryImages.push(images[i % images.length]);
   }
+
+  const openModal = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeModal = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % galleryImages.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-rose-50">
@@ -71,13 +89,14 @@ export default function GalleryTemplate({ title, images = [] }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   className="group cursor-pointer"
+                  onClick={() => openModal(idx)}
                 >
                   <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white/50 backdrop-blur-sm border border-white/20 hover:shadow-3xl transition-all duration-500">
                     <div className="aspect-[4/5]">
                       <img 
                         src={src} 
                         alt={`${title} ${idx + 1}`} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                        className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" 
                       />
                     </div>
                     
@@ -95,6 +114,76 @@ export default function GalleryTemplate({ title, images = [] }) {
           </div>
         </section>
       </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {selectedImageIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            onClick={closeModal}
+          >
+            {/* Blurred Background */}
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+            
+            {/* Modal Content */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative z-10 flex items-center justify-center w-full h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+
+              {/* Navigation Buttons */}
+              <button
+                onClick={prevImage}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm rounded-full w-12 h-12 flex items-center justify-center text-gray-700 hover:bg-white transition-colors shadow-lg"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+
+              <button
+                onClick={nextImage}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm rounded-full w-12 h-12 flex items-center justify-center text-gray-700 hover:bg-white transition-colors shadow-lg"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+
+              {/* Full Card Container */}
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white/50 backdrop-blur-sm border border-white/20 w-96 h-[480px]">
+                <div className="aspect-[4/5]">
+                  <img 
+                    src={galleryImages[selectedImageIndex]} 
+                    alt={`${title} ${selectedImageIndex + 1}`} 
+                    className="w-full h-full object-contain" 
+                  />
+                </div>
+                
+                {/* Elegant Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70"></div>
+                
+                {/* Close Button (X) */}
+                <button
+                  onClick={closeModal}
+                  className="absolute top-1 right-1.5 bg-white/90 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center text-gray-700 hover:bg-white transition-colors shadow-lg z-20"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
